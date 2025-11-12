@@ -16,6 +16,10 @@ import {
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import engineersTeam from "@/assets/engineers-team.jpg";
+import trainingSession from "@/assets/training-session.jpg";
+import ndtInspection from "@/assets/ndt-inspection.jpg";
+import hseTraining from "@/assets/hse-training.jpg";
 
 const Home = () => {
   const features = [
@@ -151,6 +155,46 @@ const Home = () => {
                 </CardContent>
               </Card>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Engineering Excellence Section */}
+      <section className="py-20 bg-background">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12 animate-fade-in">
+            <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4 text-primary">
+              Professional Training Excellence
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Our experienced instructors and state-of-the-art facilities ensure the highest quality technical training
+            </p>
+          </div>
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="relative overflow-hidden rounded-lg shadow-custom group">
+              <img src={engineersTeam} alt="Professional engineering team at industrial facility" className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end">
+                <p className="text-white p-6 font-semibold">Expert Engineering Team</p>
+              </div>
+            </div>
+            <div className="relative overflow-hidden rounded-lg shadow-custom group">
+              <img src={trainingSession} alt="Technical training session with instructor and students" className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end">
+                <p className="text-white p-6 font-semibold">Interactive Live Classes</p>
+              </div>
+            </div>
+            <div className="relative overflow-hidden rounded-lg shadow-custom group">
+              <img src={ndtInspection} alt="NDT inspection engineer with testing equipment" className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end">
+                <p className="text-white p-6 font-semibold">NDT Testing & Inspection</p>
+              </div>
+            </div>
+            <div className="relative overflow-hidden rounded-lg shadow-custom group">
+              <img src={hseTraining} alt="HSE safety officer conducting fire safety training" className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end">
+                <p className="text-white p-6 font-semibold">HSE Safety Training</p>
+              </div>
+            </div>
           </div>
         </div>
       </section>

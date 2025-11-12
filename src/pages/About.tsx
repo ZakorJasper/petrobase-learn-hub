@@ -2,6 +2,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Target, Eye, Award, Users, TrendingUp, Shield, Lightbulb, HandshakeIcon } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import trainingSession from "@/assets/training-session.jpg";
 
 const About = () => {
   const values = [
@@ -33,6 +34,9 @@ const About = () => {
       <section className="py-16 bg-background">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
+            <div className="relative overflow-hidden rounded-lg shadow-custom mb-8">
+              <img src={trainingSession} alt="Professional training session at Petro-Base Training School" className="w-full h-80 object-cover" />
+            </div>
             <h2 className="text-3xl font-heading font-bold mb-6 text-primary">Who We Are</h2>
             <p className="text-lg text-muted-foreground leading-relaxed mb-6">
               Petro-Base Training School (PBTS) is a world-class technical and professional training institution providing industry-recognized programs for the oil, gas, and industrial sectors. As a division of Petro-Base Group Limited, we deliver certified courses in Health, Safety & Environment (HSE), Lifting Equipment Operation, Rigging, Non-Destructive Testing (NDT), Engineering Design (AutoCAD), and Project Management (Primavera).
