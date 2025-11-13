@@ -3,6 +3,8 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AdminSidebar } from "@/components/AdminSidebar";
 import AdminOverview from "./admin/Overview";
 import AdminSettings from "./admin/Settings";
+import AdminStudents from "./admin/Students";
+import AdminCourses from "./admin/Courses";
 
 const AdminDashboard = () => {
   return (
@@ -19,8 +21,8 @@ const AdminDashboard = () => {
           <main className="flex-1 overflow-auto">
             <Routes>
               <Route index element={<AdminOverview />} />
-              <Route path="students" element={<div className="p-6"><h2 className="text-2xl font-heading font-bold text-primary">Students Management</h2><p className="text-muted-foreground mt-2">Coming Soon</p></div>} />
-              <Route path="courses" element={<div className="p-6"><h2 className="text-2xl font-heading font-bold text-primary">Courses Management</h2><p className="text-muted-foreground mt-2">Coming Soon</p></div>} />
+              <Route path="students" element={<AdminStudents />} />
+              <Route path="courses" element={<AdminCourses />} />
               <Route path="live-classes" element={<div className="p-6"><h2 className="text-2xl font-heading font-bold text-primary">Live Classes</h2><p className="text-muted-foreground mt-2">Coming Soon</p></div>} />
               <Route path="certificates" element={<div className="p-6"><h2 className="text-2xl font-heading font-bold text-primary">Certificates</h2><p className="text-muted-foreground mt-2">Coming Soon</p></div>} />
               <Route path="payments" element={<div className="p-6"><h2 className="text-2xl font-heading font-bold text-primary">Payments</h2><p className="text-muted-foreground mt-2">Coming Soon</p></div>} />
