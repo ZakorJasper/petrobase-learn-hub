@@ -4,6 +4,7 @@ import { TraineeSidebar } from "@/components/TraineeSidebar";
 import DashboardOverview from "./dashboard/Overview";
 import DashboardCourses from "./dashboard/Courses";
 import DashboardMyCourses from "./dashboard/MyCourses";
+import DashboardCourseDetail from "./dashboard/CourseDetail";
 import DashboardCertificates from "./dashboard/Certificates";
 import DashboardPayments from "./dashboard/Payments";
 import DashboardProfile from "./dashboard/Profile";
@@ -25,6 +26,7 @@ const Dashboard = () => {
               <Route index element={<DashboardOverview />} />
               <Route path="courses" element={<DashboardCourses />} />
               <Route path="my-courses" element={<DashboardMyCourses />} />
+              <Route path="my-courses/:id" element={<DashboardCourseDetail />} />
               <Route path="certificates" element={<DashboardCertificates />} />
               <Route path="payments" element={<DashboardPayments />} />
               <Route path="profile" element={<DashboardProfile />} />

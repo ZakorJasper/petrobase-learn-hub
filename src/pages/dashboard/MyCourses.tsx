@@ -3,8 +3,11 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Video, FileText, Calendar } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const MyCourses = () => {
+  const navigate = useNavigate();
+  
   const enrolledCourses = [
     {
       id: 1,
@@ -14,7 +17,6 @@ const MyCourses = () => {
       nextClass: "Tomorrow, 10:00 AM",
       instructor: "Dr. Emeka Nwosu",
       materials: 12,
-      assignments: 3,
     },
     {
       id: 2,
@@ -24,7 +26,6 @@ const MyCourses = () => {
       completedDate: "Dec 15, 2024",
       instructor: "Engr. Oluchi Ibe",
       materials: 15,
-      assignments: 5,
     },
     {
       id: 3,
@@ -34,7 +35,6 @@ const MyCourses = () => {
       nextClass: "Jan 20, 2025, 2:00 PM",
       instructor: "Engr. David Okon",
       materials: 20,
-      assignments: 4,
     },
   ];
 
@@ -88,8 +88,12 @@ const MyCourses = () => {
                         Join Live Class
                       </Button>
                     )}
-                    <Button size="sm" variant="outline">
-                      View Materials
+                    <Button 
+                      size="sm" 
+                      variant="outline"
+                      onClick={() => navigate(`/dashboard/my-courses/${course.id}`)}
+                    >
+                      View Details
                     </Button>
                   </div>
                 </div>
@@ -98,10 +102,6 @@ const MyCourses = () => {
                   <div className="flex items-center gap-2">
                     <FileText className="h-4 w-4" />
                     <span>{course.materials} Materials</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <FileText className="h-4 w-4" />
-                    <span>{course.assignments} Assignments</span>
                   </div>
                 </div>
 
