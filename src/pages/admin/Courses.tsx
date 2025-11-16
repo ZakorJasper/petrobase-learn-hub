@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Search, Plus, Edit, Trash2, BookOpen, Users, Clock } from "lucide-react";
+import { Search, Plus, Edit, Trash2, BookOpen, Users, Clock, Eye, Upload, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -39,6 +39,7 @@ interface Course {
   enrolledStudents: number;
   status: "active" | "draft" | "archived";
   description: string;
+  documents?: string[];
 }
 
 const mockCourses: Course[] = [
@@ -88,7 +89,10 @@ const AdminCourses = () => {
   const [courses, setCourses] = useState<Course[]>(mockCourses);
   const [searchQuery, setSearchQuery] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);
   const [editingCourse, setEditingCourse] = useState<Course | null>(null);
+  const [viewingCourse, setViewingCourse] = useState<Course | null>(null);
+  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
 
   const filteredCourses = courses.filter(
     (course) =>
@@ -108,6 +112,21 @@ const AdminCourses = () => {
 
   const handleDeleteCourse = (id: string) => {
     setCourses(courses.filter((c) => c.id !== id));
+  };
+
+  const handleViewCourse = (course: Course) => {
+    setViewingCourse(course);
+    setIsViewDialogOpen(true);
+  };
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setUploadedFiles(Array.from(e.target.files));
+    }
+  };
+
+  const removeFile = (index: number) => {
+    setUploadedFiles(uploadedFiles.filter((_, i) => i !== index));
   };
 
   const getStatusBadge = (status: Course["status"]) => {
@@ -214,6 +233,40 @@ const AdminCourses = () => {
                   </SelectContent>
                 </Select>
               </div>
+              <div className="grid gap-2">
+                <Label htmlFor="documents">Supporting Documents (Optional)</Label>
+                <div className="border-2 border-dashed border-border rounded-lg p-4 text-center hover:border-primary/50 transition-colors">
+                  <Input
+                    id="documents"
+                    type="file"
+                    multiple
+                    onChange={handleFileUpload}
+                    className="hidden"
+                  />
+                  <label htmlFor="documents" className="cursor-pointer flex flex-col items-center gap-2">
+                    <Upload className="h-8 w-8 text-muted-foreground" />
+                    <span className="text-sm text-muted-foreground">
+                      Click to upload course materials, syllabus, etc.
+                    </span>
+                  </label>
+                </div>
+                {uploadedFiles.length > 0 && (
+                  <div className="mt-2 space-y-2">
+                    {uploadedFiles.map((file, index) => (
+                      <div key={index} className="flex items-center justify-between p-2 bg-muted rounded">
+                        <span className="text-sm truncate">{file.name}</span>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => removeFile(index)}
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
             <DialogFooter>
               <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
@@ -286,6 +339,13 @@ const AdminCourses = () => {
                     <Button
                       variant="ghost"
                       size="icon"
+                      onClick={() => handleViewCourse(course)}
+                    >
+                      <Eye className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
                       onClick={() => handleEditCourse(course)}
                     >
                       <Edit className="h-4 w-4" />
@@ -310,6 +370,66 @@ const AdminCourses = () => {
           No courses found matching your search.
         </div>
       )}
+
+      {/* View Course Dialog */}
+      <Dialog open={isViewDialogOpen} onOpenChange={setIsViewDialogOpen}>
+        <DialogContent className="sm:max-w-[700px]">
+          <DialogHeader>
+            <DialogTitle className="text-2xl">{viewingCourse?.title}</DialogTitle>
+            <DialogDescription>
+              Detailed course information
+            </DialogDescription>
+          </DialogHeader>
+          {viewingCourse && (
+            <div className="space-y-6 py-4 max-h-[60vh] overflow-y-auto">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label className="text-muted-foreground">Category</Label>
+                  <p className="text-foreground font-medium">{viewingCourse.category}</p>
+                </div>
+                <div>
+                  <Label className="text-muted-foreground">Level</Label>
+                  <p className="text-foreground font-medium">{viewingCourse.level}</p>
+                </div>
+                <div>
+                  <Label className="text-muted-foreground">Duration</Label>
+                  <p className="text-foreground font-medium">{viewingCourse.duration}</p>
+                </div>
+                <div>
+                  <Label className="text-muted-foreground">Enrolled Students</Label>
+                  <p className="text-foreground font-medium">{viewingCourse.enrolledStudents}</p>
+                </div>
+                <div>
+                  <Label className="text-muted-foreground">Status</Label>
+                  <div className="mt-1">{getStatusBadge(viewingCourse.status)}</div>
+                </div>
+              </div>
+              
+              <div>
+                <Label className="text-muted-foreground">Description</Label>
+                <p className="text-foreground mt-2">{viewingCourse.description}</p>
+              </div>
+
+              {viewingCourse.documents && viewingCourse.documents.length > 0 && (
+                <div>
+                  <Label className="text-muted-foreground">Supporting Documents</Label>
+                  <div className="mt-2 space-y-2">
+                    {viewingCourse.documents.map((doc, index) => (
+                      <div key={index} className="flex items-center gap-2 p-2 bg-muted rounded">
+                        <BookOpen className="h-4 w-4 text-primary" />
+                        <span className="text-sm">{doc}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+          <DialogFooter>
+            <Button onClick={() => setIsViewDialogOpen(false)}>Close</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

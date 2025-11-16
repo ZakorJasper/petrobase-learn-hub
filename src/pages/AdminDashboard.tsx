@@ -5,6 +5,10 @@ import AdminOverview from "./admin/Overview";
 import AdminSettings from "./admin/Settings";
 import AdminStudents from "./admin/Students";
 import AdminCourses from "./admin/Courses";
+import AdminLiveClasses from "./admin/LiveClasses";
+import AdminCertificates from "./admin/Certificates";
+import AdminPayments from "./admin/Payments";
+import AdminAnalytics from "./admin/Analytics";
 
 const AdminDashboard = () => {
   return (
@@ -23,10 +27,10 @@ const AdminDashboard = () => {
               <Route index element={<AdminOverview />} />
               <Route path="students" element={<AdminStudents />} />
               <Route path="courses" element={<AdminCourses />} />
-              <Route path="live-classes" element={<div className="p-6"><h2 className="text-2xl font-heading font-bold text-primary">Live Classes</h2><p className="text-muted-foreground mt-2">Coming Soon</p></div>} />
-              <Route path="certificates" element={<div className="p-6"><h2 className="text-2xl font-heading font-bold text-primary">Certificates</h2><p className="text-muted-foreground mt-2">Coming Soon</p></div>} />
-              <Route path="payments" element={<div className="p-6"><h2 className="text-2xl font-heading font-bold text-primary">Payments</h2><p className="text-muted-foreground mt-2">Coming Soon</p></div>} />
-              <Route path="analytics" element={<div className="p-6"><h2 className="text-2xl font-heading font-bold text-primary">Analytics</h2><p className="text-muted-foreground mt-2">Coming Soon</p></div>} />
+              <Route path="live-classes" element={<AdminLiveClasses />} />
+              <Route path="certificates" element={<AdminCertificates />} />
+              <Route path="payments" element={<AdminPayments />} />
+              <Route path="analytics" element={<AdminAnalytics />} />
               <Route path="settings" element={<AdminSettings />} />
             </Routes>
           </main>
