@@ -20,6 +20,7 @@ import engineersTeam from "@/assets/engineers-team.jpg";
 import trainingSession from "@/assets/training-session.jpg";
 import ndtInspection from "@/assets/ndt-inspection.jpg";
 import hseTraining from "@/assets/hse-training.jpg";
+import heroBuilding from "@/assets/hero-building.jpg";
 
 const Home = () => {
   const features = [
@@ -88,15 +89,20 @@ const Home = () => {
       <Navbar />
       
       {/* Hero Section */}
-      <section className="relative gradient-hero text-primary-foreground py-20 md:py-32 overflow-hidden">
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48cGF0aCBkPSJNMzYgMzRjMC0yIDItNCAyLTRzMiAyIDIgNHYxMGMwIDIgMiA0IDIgNHMtMi0yLTItNFYzNHptMCAwaC0xMGMtMi0yLTQtMi00LTJzMiAyIDQgMmgxMHYtMXptMCAwaC0xMGMtMi0yLTQtMi00LTJzMiAyIDQgMmgxMFYzNHoiLz48L2c+PC9nPjwvc3ZnPg==')] opacity-20"></div>
+      <section className="relative text-primary-foreground py-20 md:py-32 overflow-hidden">
+        <div 
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: `url(${heroBuilding})` }}
+        >
+          <div className="absolute inset-0 bg-primary/80"></div>
+        </div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-3xl mx-auto text-center animate-fade-in">
             <Badge className="mb-4 bg-accent text-accent-foreground border-0">
               Accredited Training Provider
             </Badge>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold mb-6 leading-tight">
-              Empowering Professionals Through Live Technical & Safety Training
+              A world-class technical and professional training school, offering trainings that cater to the needs of the oil, gas, and industrial sectors.
             </h1>
             <p className="text-lg md:text-xl mb-8 text-primary-foreground/90 leading-relaxed">
               Industry-recognized programs for the oil, gas, and industrial sectors. From HSE to NDT, Crane Operation to Engineering Design.
