@@ -21,7 +21,7 @@ const Navbar = () => {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3 group">
-            <img src={logo} alt="PBTS Logo" className="h-12 w-12 transition-transform group-hover:scale-105" />
+            <img src={logo} alt="Petro-Base Logo" className="h-12 w-12 object-contain transition-transform group-hover:scale-105" />
             <div className="hidden md:block">
               <div className="font-heading font-bold text-lg text-primary leading-tight">
                 Petro-Base Training School
@@ -29,7 +29,7 @@ const Navbar = () => {
               <div className="text-xs text-muted-foreground">Excellence in Technical Training</div>
             </div>
           </Link>
-
+          
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center gap-1">
             {navLinks.map((link) => (
