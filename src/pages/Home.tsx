@@ -16,6 +16,12 @@ import {
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
 import engineersTeam from "@/assets/engineers-team.jpg";
 import trainingSession from "@/assets/training-session.jpg";
 import ndtInspection from "@/assets/ndt-inspection.jpg";
@@ -23,6 +29,12 @@ import hseTraining from "@/assets/hse-training.jpg";
 import heroBuilding from "@/assets/hero-building.jpg";
 
 const Home = () => {
+  const heroSlides = [
+    "A world-class technical and professional training school",
+    "Offering trainings that cater to the needs of the oil, gas, and industrial sectors",
+    "Industry-recognized programs from HSE to NDT, Crane Operation to Engineering Design"
+  ];
+
   const features = [
     {
       icon: <GraduationCap className="h-6 w-6" />,
@@ -101,12 +113,28 @@ const Home = () => {
             <Badge className="mb-4 bg-accent text-accent-foreground border-0">
               Accredited Training Provider
             </Badge>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold mb-6 leading-tight">
-              A world-class technical and professional training school, offering trainings that cater to the needs of the oil, gas, and industrial sectors.
-            </h1>
-            <p className="text-lg md:text-xl mb-8 text-primary-foreground/90 leading-relaxed">
-              Industry-recognized programs for the oil, gas, and industrial sectors. From HSE to NDT, Crane Operation to Engineering Design.
-            </p>
+            <Carousel
+              opts={{
+                align: "start",
+                loop: true,
+              }}
+              plugins={[
+                Autoplay({
+                  delay: 4000,
+                }),
+              ]}
+              className="w-full mb-8"
+            >
+              <CarouselContent>
+                {heroSlides.map((slide, index) => (
+                  <CarouselItem key={index}>
+                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold leading-tight min-h-[120px] md:min-h-[180px] flex items-center justify-center">
+                      {slide}
+                    </h1>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+            </Carousel>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 shadow-glow" asChild>
                 <Link to="/courses">
