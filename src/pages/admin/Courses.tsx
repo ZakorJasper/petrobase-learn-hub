@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Search, Plus, Edit, Trash2, BookOpen, Users, Clock, Eye, Upload, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -30,6 +31,12 @@ import {
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 
+interface CourseSchedule {
+  week: string;
+  topic: string;
+  date: string;
+}
+
 interface Course {
   id: string;
   title: string;
@@ -40,6 +47,7 @@ interface Course {
   status: "active" | "draft" | "archived";
   description: string;
   documents?: string[];
+  schedule?: CourseSchedule[];
 }
 
 const mockCourses: Course[] = [
@@ -86,13 +94,13 @@ const mockCourses: Course[] = [
 ];
 
 const AdminCourses = () => {
+  const navigate = useNavigate();
   const [courses, setCourses] = useState<Course[]>(mockCourses);
   const [searchQuery, setSearchQuery] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);
   const [editingCourse, setEditingCourse] = useState<Course | null>(null);
-  const [viewingCourse, setViewingCourse] = useState<Course | null>(null);
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
+  const [scheduleItems, setScheduleItems] = useState<CourseSchedule[]>([]);
 
   const filteredCourses = courses.filter(
     (course) =>
@@ -114,9 +122,22 @@ const AdminCourses = () => {
     setCourses(courses.filter((c) => c.id !== id));
   };
 
-  const handleViewCourse = (course: Course) => {
-    setViewingCourse(course);
-    setIsViewDialogOpen(true);
+  const handleViewCourse = (courseId: string) => {
+    navigate(`/admin/courses/${courseId}`);
+  };
+
+  const addScheduleItem = () => {
+    setScheduleItems([...scheduleItems, { week: "", topic: "", date: "" }]);
+  };
+
+  const updateScheduleItem = (index: number, field: keyof CourseSchedule, value: string) => {
+    const updated = [...scheduleItems];
+    updated[index][field] = value;
+    setScheduleItems(updated);
+  };
+
+  const removeScheduleItem = (index: number) => {
+    setScheduleItems(scheduleItems.filter((_, i) => i !== index));
   };
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -268,6 +289,52 @@ const AdminCourses = () => {
                 )}
               </div>
             </div>
+            
+            {/* Course Schedule Section */}
+            <div className="space-y-4 py-4 border-t border-border">
+              <div className="flex items-center justify-between">
+                <Label>Course Schedule</Label>
+                <Button type="button" variant="outline" size="sm" onClick={addScheduleItem}>
+                  <Plus className="h-3 w-3 mr-1" />
+                  Add Week
+                </Button>
+              </div>
+              <div className="space-y-3">
+                {scheduleItems.map((item, index) => (
+                  <div key={index} className="grid grid-cols-[1fr_2fr_1.5fr_auto] gap-2 items-start">
+                    <Input
+                      placeholder="Week 1"
+                      value={item.week}
+                      onChange={(e) => updateScheduleItem(index, "week", e.target.value)}
+                    />
+                    <Input
+                      placeholder="Topic title"
+                      value={item.topic}
+                      onChange={(e) => updateScheduleItem(index, "topic", e.target.value)}
+                    />
+                    <Input
+                      type="date"
+                      value={item.date}
+                      onChange={(e) => updateScheduleItem(index, "date", e.target.value)}
+                    />
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => removeScheduleItem(index)}
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </div>
+                ))}
+                {scheduleItems.length === 0 && (
+                  <p className="text-sm text-muted-foreground text-center py-4">
+                    No schedule items yet. Click "Add Week" to create schedule.
+                  </p>
+                )}
+              </div>
+            </div>
+
             <DialogFooter>
               <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
                 Cancel
@@ -339,7 +406,7 @@ const AdminCourses = () => {
                     <Button
                       variant="ghost"
                       size="icon"
-                      onClick={() => handleViewCourse(course)}
+                      onClick={() => handleViewCourse(course.id)}
                     >
                       <Eye className="h-4 w-4" />
                     </Button>
@@ -370,66 +437,6 @@ const AdminCourses = () => {
           No courses found matching your search.
         </div>
       )}
-
-      {/* View Course Dialog */}
-      <Dialog open={isViewDialogOpen} onOpenChange={setIsViewDialogOpen}>
-        <DialogContent className="sm:max-w-[700px]">
-          <DialogHeader>
-            <DialogTitle className="text-2xl">{viewingCourse?.title}</DialogTitle>
-            <DialogDescription>
-              Detailed course information
-            </DialogDescription>
-          </DialogHeader>
-          {viewingCourse && (
-            <div className="space-y-6 py-4 max-h-[60vh] overflow-y-auto">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label className="text-muted-foreground">Category</Label>
-                  <p className="text-foreground font-medium">{viewingCourse.category}</p>
-                </div>
-                <div>
-                  <Label className="text-muted-foreground">Level</Label>
-                  <p className="text-foreground font-medium">{viewingCourse.level}</p>
-                </div>
-                <div>
-                  <Label className="text-muted-foreground">Duration</Label>
-                  <p className="text-foreground font-medium">{viewingCourse.duration}</p>
-                </div>
-                <div>
-                  <Label className="text-muted-foreground">Enrolled Students</Label>
-                  <p className="text-foreground font-medium">{viewingCourse.enrolledStudents}</p>
-                </div>
-                <div>
-                  <Label className="text-muted-foreground">Status</Label>
-                  <div className="mt-1">{getStatusBadge(viewingCourse.status)}</div>
-                </div>
-              </div>
-              
-              <div>
-                <Label className="text-muted-foreground">Description</Label>
-                <p className="text-foreground mt-2">{viewingCourse.description}</p>
-              </div>
-
-              {viewingCourse.documents && viewingCourse.documents.length > 0 && (
-                <div>
-                  <Label className="text-muted-foreground">Supporting Documents</Label>
-                  <div className="mt-2 space-y-2">
-                    {viewingCourse.documents.map((doc, index) => (
-                      <div key={index} className="flex items-center gap-2 p-2 bg-muted rounded">
-                        <BookOpen className="h-4 w-4 text-primary" />
-                        <span className="text-sm">{doc}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
-          <DialogFooter>
-            <Button onClick={() => setIsViewDialogOpen(false)}>Close</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 };
