@@ -12,10 +12,11 @@ const Courses = () => {
 
   const categories = [
     { id: "all", label: "All Courses" },
+     { id: "ndt", label: "NDT" },
     { id: "safety", label: " HSE" },
-    { id: "technical", label: "Technical" },
-    { id: "design", label: "Design" },
-    { id: "management", label: "Management" },
+    { id: "technical", label: "Equipment Operation" },
+    { id: "design", label: "Engineering Design" },
+    { id: "management", label: "Project Management" },
   ];
 
   const courses = [
@@ -100,7 +101,7 @@ const Courses = () => {
     {
       id: 7,
       title: "NDT Level III",
-      category: "technical",
+      category: "ndt",
       icon: <Wrench className="h-10 w-10 text-secondary" />,
       duration: "6 weeks",
       level: "Advanced",
