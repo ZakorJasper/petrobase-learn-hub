@@ -12,7 +12,7 @@ const Courses = () => {
 
   const categories = [
     { id: "all", label: "All Courses" },
-    { id: "safety", label: "Safety & HSE" },
+    { id: "safety", label: " HSE" },
     { id: "technical", label: "Technical" },
     { id: "design", label: "Design" },
     { id: "management", label: "Management" },
