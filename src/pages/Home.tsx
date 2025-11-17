@@ -206,7 +206,7 @@ const Home = () => {
           </div>
           <div className="grid md:grid-cols-2 gap-6">
             <div className="relative overflow-hidden rounded-lg shadow-custom group">
-              <img src={engineersTeam} alt="Professional engineering team at industrial facility" className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300" />
+              <img src="https://petrobasegroup.com/public/images/training/f4.png" alt="Professional engineering team at industrial facility" className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end">
                 <p className="text-white p-6 font-semibold">Expert Engineering Team</p>
               </div>
