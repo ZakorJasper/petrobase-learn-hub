@@ -75,7 +75,7 @@ const Courses = () => {
     {
       id: 5,
       title: "NDT Level I",
-      category: "technical",
+      category: "ndt",
       icon: <Wrench className="h-10 w-10 text-secondary" />,
       duration: "3 weeks",
       level: "Beginner",
@@ -88,7 +88,7 @@ const Courses = () => {
     {
       id: 6,
       title: "NDT Level II",
-      category: "technical",
+      category: "ndt",
       icon: <Wrench className="h-10 w-10 text-secondary" />,
       duration: "4 weeks",
       level: "Intermediate",
@@ -229,7 +229,7 @@ const Courses = () => {
       {/* Courses Grid */}
       <section className="py-16 bg-background">
         <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-6 max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-4 gap-6 max-w-6xl mx-auto">
             {filteredCourses.map((course, index) => (
               <Card key={course.id} className="border-border hover:shadow-custom transition-all duration-300 hover:-translate-y-1 animate-fade-in" style={{ animationDelay: `${index * 0.05}s` }}>
                 <CardHeader>
