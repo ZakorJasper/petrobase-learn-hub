@@ -35,7 +35,7 @@ const About = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <div className="relative overflow-hidden rounded-lg shadow-custom mb-8">
-              <img src={trainingSession} alt="Professional training session at Petro-Base Training School" className="w-full h-80 object-cover" />
+              <img src="https://petrobasegroup.com/public/images/training/training.png" alt="Professional training session at Petro-Base Training School" className="w-full h-80 object-cover" />
             </div>
             <h2 className="text-3xl font-heading font-bold mb-6 text-primary">Who We Are</h2>
             <p className="text-lg text-muted-foreground leading-relaxed mb-6">
