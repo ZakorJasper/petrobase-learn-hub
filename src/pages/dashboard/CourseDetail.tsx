@@ -2,7 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Clock, Calendar, FileText, Video, BookOpen } from "lucide-react";
+import { ArrowLeft, Clock, Calendar, FileText, Video, BookOpen, Download, Award, GraduationCap, FileCheck } from "lucide-react";
 
 const CourseDetail = () => {
   const { id } = useParams();
@@ -19,12 +19,21 @@ const CourseDetail = () => {
       instructor: "Dr. Emeka Nwosu",
       materials: 12,
       description: "Advanced Health, Safety & Environment management for supervisory roles in industrial settings.",
+      courseScope: "Introduction to HSE principles, hazard identification, risk assessment, safety procedures, emergency response, and safety culture.",
+      competenceDeveloped: "Basic HSE awareness and fundamental safety practices",
+      entryRequirements: "Basic education and English proficiency",
+      accreditation: "International Institute of Risk and Safety Management",
       schedule: [
         { week: 1, topic: "Advanced Risk Management", date: "Jan 15-19, 2025" },
         { week: 2, topic: "Incident Investigation", date: "Jan 22-26, 2025" },
         { week: 3, topic: "Safety Audits & HSE Legislation", date: "Jan 29 - Feb 2, 2025" },
       ],
       duration: "3 weeks",
+      courseMaterials: [
+        { id: "1", name: "HSE Level II Course Manual", type: "PDF", size: "6.5 MB", uploadDate: "2025-01-10" },
+        { id: "2", name: "Risk Management Handbook", type: "PDF", size: "4.2 MB", uploadDate: "2025-01-10" },
+        { id: "3", name: "HSE Legislation Guide", type: "PDF", size: "3.1 MB", uploadDate: "2025-01-12" },
+      ],
     },
     {
       id: 2,
@@ -111,6 +120,38 @@ const CourseDetail = () => {
               </div>
 
               <div>
+                <h3 className="text-lg font-semibold mb-3 flex items-center">
+                  <FileCheck className="mr-2 h-5 w-5 text-primary" />
+                  Course Scope
+                </h3>
+                <p className="text-muted-foreground leading-relaxed">{course.courseScope}</p>
+              </div>
+
+              <div>
+                <h3 className="text-lg font-semibold mb-3 flex items-center">
+                  <GraduationCap className="mr-2 h-5 w-5 text-primary" />
+                  Competence Developed
+                </h3>
+                <p className="text-muted-foreground leading-relaxed">{course.competenceDeveloped}</p>
+              </div>
+
+              <div>
+                <h3 className="text-lg font-semibold mb-3 flex items-center">
+                  <FileCheck className="mr-2 h-5 w-5 text-primary" />
+                  Entry Requirements
+                </h3>
+                <p className="text-muted-foreground leading-relaxed">{course.entryRequirements}</p>
+              </div>
+
+              <div>
+                <h3 className="text-lg font-semibold mb-3 flex items-center">
+                  <Award className="mr-2 h-5 w-5 text-primary" />
+                  Accreditation
+                </h3>
+                <p className="text-muted-foreground leading-relaxed">{course.accreditation}</p>
+              </div>
+
+              <div>
                 <h3 className="text-lg font-semibold mb-4 flex items-center">
                   <Calendar className="mr-2 h-5 w-5 text-primary" />
                   Course Schedule
@@ -124,6 +165,36 @@ const CourseDetail = () => {
                             <p className="font-semibold">Week {week.week}: {week.topic}</p>
                             <p className="text-sm text-muted-foreground mt-1">{week.date}</p>
                           </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-lg font-semibold mb-4 flex items-center">
+                  <Download className="mr-2 h-5 w-5 text-primary" />
+                  Course Materials
+                </h3>
+                <div className="space-y-3">
+                  {course.courseMaterials?.map((material) => (
+                    <Card key={material.id} className="border-border hover:bg-accent/50 transition-colors">
+                      <CardContent className="p-4">
+                        <div className="flex items-center justify-between">
+                          <div className="flex-1">
+                            <p className="font-semibold">{material.name}</p>
+                            <div className="flex gap-3 text-xs text-muted-foreground mt-1">
+                              <span>{material.type}</span>
+                              <span>•</span>
+                              <span>{material.size}</span>
+                              <span>•</span>
+                              <span>{new Date(material.uploadDate).toLocaleDateString()}</span>
+                            </div>
+                          </div>
+                          <Button size="sm" variant="ghost">
+                            <Download className="h-4 w-4" />
+                          </Button>
                         </div>
                       </CardContent>
                     </Card>

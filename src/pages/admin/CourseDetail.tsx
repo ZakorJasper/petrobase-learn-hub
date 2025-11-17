@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft, BookOpen, Clock, Users, Calendar, Video } from "lucide-react";
+import { ArrowLeft, BookOpen, Clock, Users, Calendar, Video, Download, Award, GraduationCap, FileCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -27,6 +27,14 @@ interface LiveClass {
   status: "scheduled" | "live" | "completed";
 }
 
+interface CourseMaterial {
+  id: string;
+  name: string;
+  type: string;
+  size: string;
+  uploadDate: string;
+}
+
 interface Course {
   id: string;
   title: string;
@@ -36,8 +44,13 @@ interface Course {
   enrolledStudents: number;
   status: "active" | "draft" | "archived";
   description: string;
+  courseScope?: string;
+  competenceDeveloped?: string;
+  entryRequirements?: string;
+  accreditation?: string;
   schedule?: CourseSchedule[];
   liveClasses?: LiveClass[];
+  materials?: CourseMaterial[];
 }
 
 const mockCourses: Course[] = [
@@ -50,6 +63,10 @@ const mockCourses: Course[] = [
     enrolledStudents: 24,
     status: "active",
     description: "Foundational health, safety, and environment training covering workplace safety protocols, hazard identification, risk assessment, and emergency response procedures.",
+    courseScope: "Introduction to HSE principles, hazard identification, risk assessment, safety procedures, emergency response, and safety culture.",
+    competenceDeveloped: "Basic HSE awareness and fundamental safety practices",
+    entryRequirements: "Basic education and English proficiency",
+    accreditation: "International Institute of Risk and Safety Management",
     schedule: [
       { week: "Week 1", topic: "Introduction to HSE", date: "2025-12-17" },
       { week: "Week 2", topic: "Risk Assessment", date: "2025-12-24" },
@@ -58,6 +75,11 @@ const mockCourses: Course[] = [
     liveClasses: [
       { id: "1", title: "HSE Level I - Session 1", date: "2025-12-17", time: "10:00 AM", duration: "2 hours", status: "scheduled" },
       { id: "2", title: "HSE Level I - Session 2", date: "2025-12-24", time: "10:00 AM", duration: "2 hours", status: "scheduled" },
+    ],
+    materials: [
+      { id: "1", name: "HSE Level I Course Manual", type: "PDF", size: "5.2 MB", uploadDate: "2025-11-15" },
+      { id: "2", name: "Safety Procedures Handbook", type: "PDF", size: "3.8 MB", uploadDate: "2025-11-15" },
+      { id: "3", name: "Emergency Response Guide", type: "PDF", size: "2.1 MB", uploadDate: "2025-11-16" },
     ],
   },
   {
@@ -163,6 +185,94 @@ const AdminCourseDetail = () => {
           <Badge variant="outline">{course.level}</Badge>
           {getStatusBadge(course.status)}
         </div>
+      </div>
+
+      <div className="grid gap-6 md:grid-cols-2">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <BookOpen className="h-5 w-5" />
+              Course Information
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            {course.courseScope && (
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <FileCheck className="h-4 w-4 text-primary" />
+                  <h4 className="font-semibold text-foreground">Course Scope</h4>
+                </div>
+                <p className="text-sm text-muted-foreground leading-relaxed">{course.courseScope}</p>
+              </div>
+            )}
+            
+            {course.competenceDeveloped && (
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <GraduationCap className="h-4 w-4 text-primary" />
+                  <h4 className="font-semibold text-foreground">Competence Developed</h4>
+                </div>
+                <p className="text-sm text-muted-foreground leading-relaxed">{course.competenceDeveloped}</p>
+              </div>
+            )}
+            
+            {course.entryRequirements && (
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <FileCheck className="h-4 w-4 text-primary" />
+                  <h4 className="font-semibold text-foreground">Entry Requirements</h4>
+                </div>
+                <p className="text-sm text-muted-foreground leading-relaxed">{course.entryRequirements}</p>
+              </div>
+            )}
+            
+            {course.accreditation && (
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <Award className="h-4 w-4 text-primary" />
+                  <h4 className="font-semibold text-foreground">Accreditation</h4>
+                </div>
+                <p className="text-sm text-muted-foreground leading-relaxed">{course.accreditation}</p>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Download className="h-5 w-5" />
+              Course Materials
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            {course.materials && course.materials.length > 0 ? (
+              <div className="space-y-3">
+                {course.materials.map((material) => (
+                  <div key={material.id} className="flex items-center justify-between p-3 border border-border rounded-lg hover:bg-accent/50 transition-colors">
+                    <div className="flex-1">
+                      <p className="font-medium text-sm text-foreground">{material.name}</p>
+                      <div className="flex gap-3 text-xs text-muted-foreground mt-1">
+                        <span>{material.type}</span>
+                        <span>•</span>
+                        <span>{material.size}</span>
+                        <span>•</span>
+                        <span>{new Date(material.uploadDate).toLocaleDateString()}</span>
+                      </div>
+                    </div>
+                    <Button size="sm" variant="ghost">
+                      <Download className="h-4 w-4" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-sm text-muted-foreground text-center py-8">
+                No materials uploaded yet.
+              </p>
+            )}
+          </CardContent>
+        </Card>
       </div>
 
       <div className="grid gap-6 md:grid-cols-2">
