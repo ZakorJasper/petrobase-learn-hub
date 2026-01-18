@@ -20,7 +20,7 @@ const AdminDashboard = () => {
           <header className="h-16 border-b border-border bg-background flex items-center px-6">
             <SidebarTrigger className="mr-4" />
             <h1 className="text-xl font-heading font-bold text-primary">
-              Admin Dashboard
+              Super Admin Dashboard
             </h1>
           </header>
           <main className="flex-1 overflow-auto">
