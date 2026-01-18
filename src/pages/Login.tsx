@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { GraduationCap, Shield } from "lucide-react";
+import { GraduationCap, Shield, Users } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const Login = () => {
@@ -16,7 +16,6 @@ const Login = () => {
 
   const handleTraineeLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    // Mock authentication - replace with real auth later
     if (email && password) {
       toast({
         title: "Login Successful",
@@ -32,13 +31,29 @@ const Login = () => {
     }
   };
 
-  const handleAdminLogin = (e: React.FormEvent) => {
+  const handleInstructorLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    // Mock authentication - replace with real auth later
     if (email && password) {
       toast({
         title: "Login Successful",
-        description: "Welcome to admin dashboard",
+        description: "Welcome to your instructor dashboard",
+      });
+      navigate("/instructor");
+    } else {
+      toast({
+        title: "Error",
+        description: "Please enter valid credentials",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleAdminLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (email && password) {
+      toast({
+        title: "Login Successful",
+        description: "Welcome to super admin dashboard",
       });
       navigate("/admin");
     } else {
@@ -61,14 +76,18 @@ const Login = () => {
         </div>
 
         <Tabs defaultValue="trainee" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 mb-4">
+          <TabsList className="grid w-full grid-cols-3 mb-4">
             <TabsTrigger value="trainee">
-              <GraduationCap className="h-4 w-4 mr-2" />
-              Trainee
+              <GraduationCap className="h-4 w-4 mr-1" />
+              <span className="hidden sm:inline">Trainee</span>
+            </TabsTrigger>
+            <TabsTrigger value="instructor">
+              <Users className="h-4 w-4 mr-1" />
+              <span className="hidden sm:inline">Instructor</span>
             </TabsTrigger>
             <TabsTrigger value="admin">
-              <Shield className="h-4 w-4 mr-2" />
-              Admin
+              <Shield className="h-4 w-4 mr-1" />
+              <span className="hidden sm:inline">Super Admin</span>
             </TabsTrigger>
           </TabsList>
 
@@ -82,34 +101,37 @@ const Login = () => {
                 <form onSubmit={handleTraineeLogin} className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="trainee-email">Email</Label>
-                    <Input
-                      id="trainee-email"
-                      type="email"
-                      placeholder="your.email@example.com"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      required
-                    />
+                    <Input id="trainee-email" type="email" placeholder="your.email@example.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="trainee-password">Password</Label>
-                    <Input
-                      id="trainee-password"
-                      type="password"
-                      placeholder="••••••••"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      required
-                    />
+                    <Input id="trainee-password" type="password" placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} required />
                   </div>
-                  <Button type="submit" className="w-full bg-gradient-to-r from-primary to-secondary">
-                    Login as Trainee
-                  </Button>
-                  <div className="text-center text-sm">
-                    <a href="#" className="text-primary hover:underline">
-                      Forgot password?
-                    </a>
+                  <Button type="submit" className="w-full bg-gradient-to-r from-primary to-secondary">Login as Trainee</Button>
+                  <div className="text-center text-sm"><a href="#" className="text-primary hover:underline">Forgot password?</a></div>
+                </form>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="instructor">
+            <Card className="border-border">
+              <CardHeader>
+                <CardTitle>Instructor Login</CardTitle>
+                <CardDescription>Manage your courses and students</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <form onSubmit={handleInstructorLogin} className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="instructor-email">Email</Label>
+                    <Input id="instructor-email" type="email" placeholder="instructor@petrobasegroup.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
                   </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="instructor-password">Password</Label>
+                    <Input id="instructor-password" type="password" placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                  </div>
+                  <Button type="submit" className="w-full bg-gradient-to-r from-primary to-secondary">Login as Instructor</Button>
+                  <div className="text-center text-sm"><a href="#" className="text-primary hover:underline">Forgot password?</a></div>
                 </form>
               </CardContent>
             </Card>
@@ -118,41 +140,21 @@ const Login = () => {
           <TabsContent value="admin">
             <Card className="border-border">
               <CardHeader>
-                <CardTitle>Admin Login</CardTitle>
-                <CardDescription>Access administrative dashboard</CardDescription>
+                <CardTitle>Super Admin Login</CardTitle>
+                <CardDescription>Full system administration access</CardDescription>
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleAdminLogin} className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="admin-email">Email</Label>
-                    <Input
-                      id="admin-email"
-                      type="email"
-                      placeholder="admin@petrobasegroup.com"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      required
-                    />
+                    <Input id="admin-email" type="email" placeholder="admin@petrobasegroup.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="admin-password">Password</Label>
-                    <Input
-                      id="admin-password"
-                      type="password"
-                      placeholder="••••••••"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      required
-                    />
+                    <Input id="admin-password" type="password" placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} required />
                   </div>
-                  <Button type="submit" className="w-full bg-gradient-to-r from-primary to-secondary">
-                    Login as Admin
-                  </Button>
-                  <div className="text-center text-sm">
-                    <a href="#" className="text-primary hover:underline">
-                      Forgot password?
-                    </a>
-                  </div>
+                  <Button type="submit" className="w-full bg-gradient-to-r from-primary to-secondary">Login as Super Admin</Button>
+                  <div className="text-center text-sm"><a href="#" className="text-primary hover:underline">Forgot password?</a></div>
                 </form>
               </CardContent>
             </Card>
@@ -160,9 +162,7 @@ const Login = () => {
         </Tabs>
 
         <div className="mt-6 text-center">
-          <Button variant="link" onClick={() => navigate("/")}>
-            Back to Home
-          </Button>
+          <Button variant="link" onClick={() => navigate("/")}>Back to Home</Button>
         </div>
       </div>
     </div>
