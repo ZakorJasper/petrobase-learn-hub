@@ -1,4 +1,4 @@
-import { LayoutDashboard, Users, BookOpen, Video, Award, DollarSign, BarChart3, Settings, LogOut } from "lucide-react";
+import { LayoutDashboard, Users, BookOpen, Video, Award, DollarSign, Settings, LogOut, Mail } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
@@ -21,7 +21,7 @@ const menuItems = [
   { title: "Live Classes", url: "/admin/live-classes", icon: Video },
   { title: "Certificates", url: "/admin/certificates", icon: Award },
   { title: "Payments", url: "/admin/payments", icon: DollarSign },
-  { title: "Analytics", url: "/admin/analytics", icon: BarChart3 },
+  { title: "Communication", url: "/admin/communication", icon: Mail },
   { title: "Settings", url: "/admin/settings", icon: Settings },
 ];
 
