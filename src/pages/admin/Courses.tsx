@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Search, Plus, Edit, Trash2, BookOpen, Users, Clock, Eye, Upload, X } from "lucide-react";
+import { Search, Plus, Edit, Trash2, BookOpen, Users, Clock, Eye, Upload, X, Image } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -42,7 +42,7 @@ interface Course {
   title: string;
   category: string;
   duration: string;
-  level: string;
+  thumbnail?: string;
   enrolledStudents: number;
   status: "active" | "draft" | "archived";
   description: string;
@@ -56,7 +56,7 @@ const mockCourses: Course[] = [
     title: "HSE Level I",
     category: "Health, Safety & Environment",
     duration: "3 weeks",
-    level: "Beginner",
+    thumbnail: "/placeholder.svg",
     enrolledStudents: 24,
     status: "active",
     description: "Foundational health, safety, and environment training",
@@ -66,7 +66,7 @@ const mockCourses: Course[] = [
     title: "NDT Level II - Ultrasonic Testing",
     category: "Non-Destructive Testing",
     duration: "4 weeks",
-    level: "Intermediate",
+    thumbnail: "/placeholder.svg",
     enrolledStudents: 15,
     status: "active",
     description: "Advanced ultrasonic testing techniques and certification",
@@ -76,7 +76,7 @@ const mockCourses: Course[] = [
     title: "AutoCAD 2D/3D Design",
     category: "Engineering Design",
     duration: "6 weeks",
-    level: "Beginner",
+    thumbnail: "/placeholder.svg",
     enrolledStudents: 32,
     status: "active",
     description: "Comprehensive AutoCAD training for engineering applications",
@@ -86,7 +86,7 @@ const mockCourses: Course[] = [
     title: "Primavera P6 - Project Management",
     category: "Project Management",
     duration: "4 weeks",
-    level: "Intermediate",
+    thumbnail: "/placeholder.svg",
     enrolledStudents: 18,
     status: "draft",
     description: "Professional project scheduling and management",
@@ -100,6 +100,8 @@ const AdminCourses = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingCourse, setEditingCourse] = useState<Course | null>(null);
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
+  const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
+  const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null);
   const [scheduleItems, setScheduleItems] = useState<CourseSchedule[]>([]);
 
   const filteredCourses = courses.filter(
@@ -110,11 +112,16 @@ const AdminCourses = () => {
 
   const handleAddCourse = () => {
     setEditingCourse(null);
+    setUploadedFiles([]);
+    setThumbnailFile(null);
+    setThumbnailPreview(null);
+    setScheduleItems([]);
     setIsDialogOpen(true);
   };
 
   const handleEditCourse = (course: Course) => {
     setEditingCourse(course);
+    setThumbnailPreview(course.thumbnail || null);
     setIsDialogOpen(true);
   };
 
@@ -142,12 +149,30 @@ const AdminCourses = () => {
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      setUploadedFiles(Array.from(e.target.files));
+      const newFiles = Array.from(e.target.files);
+      setUploadedFiles(prev => [...prev, ...newFiles]);
+    }
+  };
+
+  const handleThumbnailUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setThumbnailFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setThumbnailPreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
   const removeFile = (index: number) => {
     setUploadedFiles(uploadedFiles.filter((_, i) => i !== index));
+  };
+
+  const removeThumbnail = () => {
+    setThumbnailFile(null);
+    setThumbnailPreview(null);
   };
 
   const getStatusBadge = (status: Course["status"]) => {
@@ -181,7 +206,7 @@ const AdminCourses = () => {
               Add Course
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-[600px]">
+          <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>
                 {editingCourse ? "Edit Course" : "Add New Course"}
@@ -192,7 +217,47 @@ const AdminCourses = () => {
                   : "Enter the details of the new course."}
               </DialogDescription>
             </DialogHeader>
-            <div className="grid gap-4 py-4 max-h-[60vh] overflow-y-auto">
+            <div className="grid gap-4 py-4">
+              {/* Thumbnail Upload */}
+              <div className="grid gap-2">
+                <Label>Course Thumbnail</Label>
+                <div className="flex items-start gap-4">
+                  {thumbnailPreview ? (
+                    <div className="relative w-32 h-20 rounded-lg overflow-hidden border border-border">
+                      <img 
+                        src={thumbnailPreview} 
+                        alt="Thumbnail preview" 
+                        className="w-full h-full object-cover"
+                      />
+                      <Button
+                        variant="destructive"
+                        size="icon"
+                        className="absolute top-1 right-1 h-6 w-6"
+                        onClick={removeThumbnail}
+                      >
+                        <X className="h-3 w-3" />
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="border-2 border-dashed border-border rounded-lg p-4 flex-1 hover:border-primary/50 transition-colors">
+                      <Input
+                        id="thumbnail"
+                        type="file"
+                        accept="image/*"
+                        onChange={handleThumbnailUpload}
+                        className="hidden"
+                      />
+                      <label htmlFor="thumbnail" className="cursor-pointer flex flex-col items-center gap-2">
+                        <Image className="h-8 w-8 text-muted-foreground" />
+                        <span className="text-sm text-muted-foreground">
+                          Click to upload course thumbnail
+                        </span>
+                      </label>
+                    </div>
+                  )}
+                </div>
+              </div>
+
               <div className="grid gap-2">
                 <Label htmlFor="title">Course Title</Label>
                 <Input id="title" placeholder="e.g., HSE Level I" />
@@ -214,24 +279,9 @@ const AdminCourses = () => {
                   </SelectContent>
                 </Select>
               </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="grid gap-2">
-                  <Label htmlFor="duration">Duration</Label>
-                  <Input id="duration" placeholder="e.g., 3 weeks" />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="level">Level</Label>
-                  <Select defaultValue="beginner">
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="beginner">Beginner</SelectItem>
-                      <SelectItem value="intermediate">Intermediate</SelectItem>
-                      <SelectItem value="advanced">Advanced</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+              <div className="grid gap-2">
+                <Label htmlFor="duration">Duration</Label>
+                <Input id="duration" placeholder="e.g., 3 weeks" />
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="description">Description</Label>
@@ -255,7 +305,7 @@ const AdminCourses = () => {
                 </Select>
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="documents">Supporting Documents (Optional)</Label>
+                <Label htmlFor="documents">Supporting Documents (Multiple files allowed)</Label>
                 <div className="border-2 border-dashed border-border rounded-lg p-4 text-center hover:border-primary/50 transition-colors">
                   <Input
                     id="documents"
@@ -269,13 +319,17 @@ const AdminCourses = () => {
                     <span className="text-sm text-muted-foreground">
                       Click to upload course materials, syllabus, etc.
                     </span>
+                    <span className="text-xs text-muted-foreground">
+                      You can select multiple files at once
+                    </span>
                   </label>
                 </div>
                 {uploadedFiles.length > 0 && (
                   <div className="mt-2 space-y-2">
+                    <p className="text-sm font-medium">{uploadedFiles.length} file(s) selected</p>
                     {uploadedFiles.map((file, index) => (
                       <div key={index} className="flex items-center justify-between p-2 bg-muted rounded">
-                        <span className="text-sm truncate">{file.name}</span>
+                        <span className="text-sm truncate flex-1">{file.name}</span>
                         <Button
                           variant="ghost"
                           size="icon"
@@ -363,9 +417,9 @@ const AdminCourses = () => {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Course Title</TableHead>
+              <TableHead>Course</TableHead>
               <TableHead>Category</TableHead>
-              <TableHead>Details</TableHead>
+              <TableHead>Duration</TableHead>
               <TableHead>Enrolled</TableHead>
               <TableHead>Status</TableHead>
               <TableHead className="text-right">Actions</TableHead>
@@ -375,8 +429,20 @@ const AdminCourses = () => {
             {filteredCourses.map((course) => (
               <TableRow key={course.id}>
                 <TableCell>
-                  <div className="flex items-center gap-2">
-                    <BookOpen className="h-4 w-4 text-primary" />
+                  <div className="flex items-center gap-3">
+                    <div className="w-16 h-10 rounded-md overflow-hidden bg-muted flex-shrink-0">
+                      {course.thumbnail ? (
+                        <img 
+                          src={course.thumbnail} 
+                          alt={course.title}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center">
+                          <BookOpen className="h-4 w-4 text-muted-foreground" />
+                        </div>
+                      )}
+                    </div>
                     <span className="font-medium">{course.title}</span>
                   </div>
                 </TableCell>
@@ -384,14 +450,9 @@ const AdminCourses = () => {
                   {course.category}
                 </TableCell>
                 <TableCell>
-                  <div className="flex flex-col gap-1 text-sm">
-                    <div className="flex items-center gap-2">
-                      <Clock className="h-3 w-3 text-muted-foreground" />
-                      {course.duration}
-                    </div>
-                    <Badge variant="outline" className="w-fit text-xs">
-                      {course.level}
-                    </Badge>
+                  <div className="flex items-center gap-2 text-sm">
+                    <Clock className="h-3 w-3 text-muted-foreground" />
+                    {course.duration}
                   </div>
                 </TableCell>
                 <TableCell>

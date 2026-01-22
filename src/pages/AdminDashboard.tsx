@@ -9,7 +9,7 @@ import AdminCourseDetail from "./admin/CourseDetail";
 import AdminLiveClasses from "./admin/LiveClasses";
 import AdminCertificates from "./admin/Certificates";
 import AdminPayments from "./admin/Payments";
-import AdminAnalytics from "./admin/Analytics";
+import AdminCommunication from "./admin/Communication";
 
 const AdminDashboard = () => {
   return (
@@ -32,7 +32,7 @@ const AdminDashboard = () => {
               <Route path="live-classes" element={<AdminLiveClasses />} />
               <Route path="certificates" element={<AdminCertificates />} />
               <Route path="payments" element={<AdminPayments />} />
-              <Route path="analytics" element={<AdminAnalytics />} />
+              <Route path="communication" element={<AdminCommunication />} />
               <Route path="settings" element={<AdminSettings />} />
             </Routes>
           </main>
