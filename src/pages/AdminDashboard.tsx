@@ -7,6 +7,7 @@ import AdminStudents from "./admin/Students";
 import AdminCourses from "./admin/Courses";
 import AdminCourseDetail from "./admin/CourseDetail";
 import AdminLiveClasses from "./admin/LiveClasses";
+import AdminEvents from "./admin/Events";
 import AdminCertificates from "./admin/Certificates";
 import AdminPayments from "./admin/Payments";
 import AdminCommunication from "./admin/Communication";
@@ -30,6 +31,7 @@ const AdminDashboard = () => {
               <Route path="courses" element={<AdminCourses />} />
               <Route path="courses/:courseId" element={<AdminCourseDetail />} />
               <Route path="live-classes" element={<AdminLiveClasses />} />
+              <Route path="events" element={<AdminEvents />} />
               <Route path="certificates" element={<AdminCertificates />} />
               <Route path="payments" element={<AdminPayments />} />
               <Route path="communication" element={<AdminCommunication />} />
