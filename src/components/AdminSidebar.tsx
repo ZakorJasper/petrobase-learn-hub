@@ -1,4 +1,4 @@
-import { LayoutDashboard, Users, BookOpen, Video, Award, DollarSign, Settings, LogOut, Mail, CalendarDays } from "lucide-react";
+import { LayoutDashboard, Users, BookOpen, Video, Award, DollarSign, Settings, LogOut, Mail, CalendarDays, ClipboardCheck } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
@@ -23,6 +23,7 @@ const menuItems = [
   { title: "Certificates", url: "/admin/certificates", icon: Award },
   { title: "Payments", url: "/admin/payments", icon: DollarSign },
   { title: "Communication", url: "/admin/communication", icon: Mail },
+  { title: "Assessment Engine", url: "/admin/assessment-settings", icon: ClipboardCheck },
   { title: "Settings", url: "/admin/settings", icon: Settings },
 ];
 
