@@ -11,6 +11,7 @@ import AdminEvents from "./admin/Events";
 import AdminCertificates from "./admin/Certificates";
 import AdminPayments from "./admin/Payments";
 import AdminCommunication from "./admin/Communication";
+import AssessmentSettings from "./admin/AssessmentSettings";
 
 const AdminDashboard = () => {
   return (
@@ -35,6 +36,7 @@ const AdminDashboard = () => {
               <Route path="certificates" element={<AdminCertificates />} />
               <Route path="payments" element={<AdminPayments />} />
               <Route path="communication" element={<AdminCommunication />} />
+              <Route path="assessment-settings" element={<AssessmentSettings />} />
               <Route path="settings" element={<AdminSettings />} />
             </Routes>
           </main>
